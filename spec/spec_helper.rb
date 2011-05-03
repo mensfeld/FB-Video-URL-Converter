@@ -23,8 +23,9 @@ require 'fb_video_url_converter'
 require 'active_record'
 require 'fileutils'
 
-FacebookBot.email = 'mail@mail.pl'
-FacebookBot.password = 'pass'
+FacebookBot.email = 'email'
+FacebookBot.password = 'password'
+FacebookVideo.cache = 60*10
 
 ActiveRecord::Base.establish_connection(
     :adapter => "sqlite3",

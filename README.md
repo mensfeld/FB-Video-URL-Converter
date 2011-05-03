@@ -82,6 +82,8 @@ initializer containing:
 
     FacebookBot.email = 'insert_here_mail@facebook.com'
     FacebookBot.password = 'pass'
+    # Cache storage - in seconds
+    FacebookVideo.cache = 60*10
 
 Insert your own account data and you are ready to go :)
 
@@ -91,6 +93,8 @@ If you want to run rspec tests - you will need to modify:
 
     FacebookBot.email = 'test@test.pl'
     FacebookBot.password = 'pass'
+    # Cache storage - in seconds
+    FacebookVideo.cache = 60*10
 
 and set them according to your own profile.
 

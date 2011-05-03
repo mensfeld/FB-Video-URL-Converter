@@ -2,7 +2,7 @@
 
 require 'net/http'
 require 'uri'
-require 'facebook_bot'
+require 'active_record'
 
 # Small extension to determine if string is a number
 class String
@@ -12,8 +12,11 @@ class String
 end
 
 class FacebookVideo < ActiveRecord::Base
-  # 30 minut
-  CACHE_TIME = 60*10
+
+  class << self
+    attr_accessor :cache
+  end
+
   VIDEO_ERROR_MSG = 'video_id_error'
   FB_ERROR_MSG = 'fb_account_error'
 
@@ -48,7 +51,7 @@ class FacebookVideo < ActiveRecord::Base
 
   def working?
     v = false
-    if self.cached_at >= Time.now - CACHE_TIME && self.url.length > 10
+    if self.cached_at >= Time.now - self.class.cache && self.url.length > 10
       v = true
     else
       v = url_working?

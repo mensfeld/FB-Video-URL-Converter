@@ -4,6 +4,7 @@ MIT-LICENSE
 Manifest
 README.md
 Rakefile
+fb_video_url_converter.gemspec
 init.rb
 lib/facebook_bot.rb
 lib/facebook_video.rb

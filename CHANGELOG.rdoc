@@ -1,2 +1,4 @@
+= Version 0.1.2
+* Moved cache time to initializer
 = Version 0.1.0
 * Gem existence started
