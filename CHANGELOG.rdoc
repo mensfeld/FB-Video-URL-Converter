@@ -1,3 +1,9 @@
+= Version 0.1.5
+* More fixes for gem dependencies (still learning ;) )
+= Version 0.1.4
+* Fixed gem dependencies
+= Version 0.1.3
+* Cached interface a bit
 = Version 0.1.2
 * Moved cache time to initializer
 = Version 0.1.0

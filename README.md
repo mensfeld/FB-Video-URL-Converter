@@ -66,13 +66,17 @@ or without migrations:
 ## Example
 
     url = 'http://www.facebook.com/home.php?#!/video/video.php?v=SOME_ID'
-    p FacebookVideo.video_url(url)
+    p FacebookVideo.get(url).url
 
     => 'http://video.ak.fbcdn.net/cfs-ak-ash4/214...long_long_url'
 
-    p FacebookVideo.video_name(url)
+    p FacebookVideo.get(url).name
 
     => 'video_name'
+
+you can use also `working?` to determine if object you have got is a valid
+Facebook movie object. If not - use `object.error` to determine what type of
+error has occurred.
 
 ## Setup
 
