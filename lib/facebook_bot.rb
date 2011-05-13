@@ -68,8 +68,10 @@ class FacebookBot
       @uid = nil
     end
     # This is a token we need to submit forms.
+
+    # TODO - FIX THIS SHIT :)
     begin
-      @post_form_id = %r{<input type="hidden" id="post_form_id" name="post_form_id" value="([^"]+)}.match(body)[1]
+      @post_form_id = %r{<input type="hidden" .* name="post_form_id" value="([^"]+)}.match(body)[1]
     rescue
       raise self.class::LoginFailed, 'Incorrect login or password'
     end
