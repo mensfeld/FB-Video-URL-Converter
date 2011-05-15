@@ -86,6 +86,8 @@ initializer containing:
 
     FacebookBot.email = 'insert_here_mail@facebook.com'
     FacebookBot.password = 'pass'
+    # Add this line below if you use it outside of rails
+    FacebookBot.cookie_path = '/path/to/cookie/store/place'
     # Cache storage - in seconds
     FacebookVideo.cache = 60*10
 
