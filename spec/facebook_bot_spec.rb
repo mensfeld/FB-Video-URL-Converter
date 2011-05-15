@@ -5,7 +5,7 @@ ROOT = File.expand_path(File.dirname(__FILE__))
 
 def remove_cookie
   c_p = File.join(ROOT, '..', 'lib', "cookie_#{FacebookBot.email}.yml")
-  FileUtils.rm( c_p ) if File.file?( c_p )
+  #FileUtils.rm( c_p ) if File.file?( c_p )
 end
 
 describe FacebookBot do
@@ -27,6 +27,16 @@ describe FacebookBot do
         lambda { subject.new }.should raise_error(subject::LoginFailed, 'Incorrect login or password')
         remove_cookie
         subject.email = l
+      end
+    end
+
+
+    context "and we don't specify cookie path" do
+      it "should throw failed exception" do
+        l = subject.cookie_path
+        subject.cookie_path = nil
+        lambda { subject.new }.should raise_error(subject::CookiePathNotInitialized, 'Specify cookie_path')
+        subject.cookie_path = l
       end
     end
   end

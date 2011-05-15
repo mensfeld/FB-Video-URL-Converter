@@ -1,4 +1,3 @@
-require 'singleton'
 require 'rubygems'
 require 'mechanize'
 include WWW
@@ -16,11 +15,13 @@ end
 class FacebookBot
 
   # Probably wrong login || password
-  class LoginFailed < StandardError; end
+  class LoginFailed               < StandardError; end
+  class CookiePathNotInitialized  < StandardError; end
 
   class << self
     attr_accessor :email
     attr_accessor :password
+    attr_accessor :cookie_path
   end
 
   FB_URL = "http://www.facebook.com/"
@@ -36,7 +37,9 @@ class FacebookBot
     begin
       @@root = File.join(Rails.root, 'tmp')
     rescue
-      @@root = File.expand_path(File.dirname(__FILE__))
+      raise CookiePathNotInitialized, 'Specify cookie_path' if self.class.cookie_path.nil?
+      # @@root = File.expand_path(File.dirname(__FILE__))
+      @@root = self.class.cookie_path
     end
     
     @cookies = File.join(@@root, "cookie_#{self.class.email}.yml")
@@ -58,7 +61,6 @@ class FacebookBot
     end
 
     @agent.cookie_jar.save_as(@cookies)
-    page = @agent.get(FB_URL)
     body = page.root.to_html
 
     begin
@@ -68,8 +70,6 @@ class FacebookBot
       @uid = nil
     end
     # This is a token we need to submit forms.
-
-    # TODO - FIX THIS SHIT :)
     begin
       @post_form_id = %r{<input type="hidden" .* name="post_form_id" value="([^"]+)}.match(body)[1]
     rescue

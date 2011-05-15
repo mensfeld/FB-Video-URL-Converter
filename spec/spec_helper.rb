@@ -25,6 +25,7 @@ require 'fileutils'
 
 FacebookBot.email = 'email'
 FacebookBot.password = 'password'
+FacebookBot.cookie_path = File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib')
 FacebookVideo.cache = 60*10
 
 ActiveRecord::Base.establish_connection(

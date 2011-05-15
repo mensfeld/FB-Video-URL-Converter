@@ -1,3 +1,7 @@
+= Version 0.1.8
+* Allowing to specify different cookie_path store place
+= Version 0.1.7
+* Fix for not loggin attemp
 = Version 0.1.6
 * Fix for fantom login failed attemp
 = Version 0.1.5
