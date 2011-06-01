@@ -1,3 +1,5 @@
+= Version 0.2.1
+* Rails generators to create DB tables
 = Version 0.1.8
 * Allowing to specify different cookie_path store place
 = Version 0.1.7

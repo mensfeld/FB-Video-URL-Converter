@@ -30,38 +30,6 @@ Works with Ruby 1.8.7, 1.8.7 EE, 1.9.2
 ## Requirements
 
 Facebook Video URL Converter uses ActiveRecord to store cached data.
-You need to create a migration containing:
-
-    class CreateFacebookVideos < ActiveRecord::Migration
-      def self.up
-        create_table :facebook_videos do |t|
-          t.column :video_id, :string
-          t.column :name, :string
-          t.column :url, :string, :default => nil
-          t.column :views, :integer, :default => 1
-          t.column :cached_at, :datetime
-        end
-
-        add_index :facebook_videos, :video_id
-        add_index :facebook_videos, :url
-      end
-
-      def self.down
-        drop_table :facebook_videos
-      end
-    end
-
-or without migrations:
-
-    unless FacebookVideo.table_exists?
-      ActiveRecord::Base.connection.create_table(:facebook_videos) do |t|
-        t.column :video_id, :string
-        t.column :name, :string
-        t.column :url, :string, :default => nil
-        t.column :views, :integer, :default => 1
-        t.column :cached_at, :datetime
-      end
-    end
 
 ## Example
 
@@ -80,18 +48,10 @@ error has occurred.
 
 ## Setup
 
-When you create table required by Facebook Video URL Converter, you need to do
-one more thing - you need to setup your Facebook account. To do so, create
-initializer containing:
+    rails generate fb_video_url_converter:install
 
-    FacebookBot.email = 'insert_here_mail@facebook.com'
-    FacebookBot.password = 'pass'
-    # Add this line below if you use it outside of rails
-    FacebookBot.cookie_path = '/path/to/cookie/store/place'
-    # Cache storage - in seconds
-    FacebookVideo.cache = 60*10
-
-Insert your own account data and you are ready to go :)
+After that, you need to setup your Facebook account. To do so, find facebook_video_converter
+initializer and set it up according to your needs. Thats all
 
 ## Tests
 
