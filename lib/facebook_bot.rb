@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'rubygems'
 require 'mechanize'
 include WWW
@@ -24,9 +26,9 @@ class FacebookBot
     attr_accessor :cookie_path
   end
 
-  FB_URL = "http://www.facebook.com/"
-  USER_AGENT = 'Windows IE 7'
-  VIDEO_ERROR = 'video_id_error'
+  FB_URL        = "http://www.facebook.com/"
+  USER_AGENT    = 'Windows IE 7'
+  VIDEO_ERROR   = 'video_id_error'
 
 
   def initialize
@@ -41,12 +43,13 @@ class FacebookBot
       # @@root = File.expand_path(File.dirname(__FILE__))
       @@root = self.class.cookie_path
     end
-    
+
     @cookies = File.join(@@root, "cookie_#{self.class.email}.yml")
 
     begin
       @agent.cookie_jar.load(@cookies)
     rescue
+      @agent.cookie_jar.clear!
     end if (File.file?(@cookies) && File.size(@cookies) > 10)
 
     self.login
@@ -58,6 +61,9 @@ class FacebookBot
     if (loginf = page.form_id("login_form"))
       loginf.set_fields(:email => self.class.email, :pass => self.class.password)
       page = @agent.submit(loginf, loginf.buttons.first)
+      # When we login (successfully) we will be redirected in a not so "gracefull"
+      # way - so we need to "skip" redirecting page
+      page = @agent.get(FB_URL) if page.root.to_html.include?('<title>Redirecting')
     end
 
     @agent.cookie_jar.save_as(@cookies)
@@ -65,10 +71,11 @@ class FacebookBot
 
     begin
       # This is a UID given to each Facebook user.
-      @uid = %r{\\"user\\":(\d+),\\"hide\\"}.match(body)[1] 
+      @uid = %r{\\"user\\":(\d+),\\"hide\\"}.match(body)[1]
     rescue
       @uid = nil
     end
+
     # This is a token we need to submit forms.
     begin
       @post_form_id = %r{<input type="hidden" .* name="post_form_id" value="([^"]+)}.match(body)[1]
