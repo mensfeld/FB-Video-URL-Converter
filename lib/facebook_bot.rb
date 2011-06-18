@@ -80,6 +80,7 @@ class FacebookBot
     begin
       @post_form_id = %r{<input type="hidden" .* name="post_form_id" value="([^"]+)}.match(body)[1]
     rescue
+      File.open(@cookies, 'w') {|f| f.write('') }
       raise self.class::LoginFailed, 'Incorrect login or password'
     end
   end
