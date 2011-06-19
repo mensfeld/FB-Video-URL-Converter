@@ -1,3 +1,5 @@
+= Version 0.2.6
+* Fix for undefined each for nil class - when cookiejar is corrupted - will clear corrupted cookiejar - so in next request - will relogin
 = Version 0.2.5
 * Removed errors login. Reraising different errors than FacebookBot::LoginFailed so will log automatically. Inserted all cookie_jar operations into begin-rescue blocks because it sometimes raises 'undefined method expired? 4 nil class'
 = Version 0.2.4

@@ -54,29 +54,25 @@ class FacebookBot
   end
 
   def login
-    page = @agent.get(FB_URL)
-
-    if (loginf = page.form_id("login_form"))
-      loginf.set_fields(:email => self.class.email, :pass => self.class.password)
-      page = @agent.submit(loginf, loginf.buttons.first)
-      # When we login (successfully) we will be redirected in a not so "gracefull"
-      # way - so we need to "skip" redirecting page
-      page = @agent.get(FB_URL) if page.root.to_html.include?('<title>Redirecting')
-    end
-
-    # Donno why but sometimes cookiejar gets crazy - so better be prepared ;)
     begin
+      page = @agent.get(FB_URL)
+
+      if (loginf = page.form_id("login_form"))
+        loginf.set_fields(:email => self.class.email, :pass => self.class.password)
+        page = @agent.submit(loginf, loginf.buttons.first)
+        # When we login (successfully) we will be redirected in a not so "gracefull"
+        # way - so we need to "skip" redirecting page
+        page = @agent.get(FB_URL) if page.root.to_html.include?('<title>Redirecting')
+      end
+
       @agent.cookie_jar.save_as(@cookies)
-    rescue
-    end
-    
-    body = page.root.to_html
-
-    # This is a token we need to submit forms.
-    begin
+      
+      body = page.root.to_html
       @post_form_id = %r{<input type="hidden" .* name="post_form_id" value="([^"]+)}.match(body)[1]
     rescue
-      raise self.class::LoginFailed, 'Incorrect login or password'
+      @agent.cookie_jar.clear!
+      @agent.cookie_jar.save_as(@cookies)
+      raise self.class::LoginFailed, 'Incorrect login/password or cookie corrupted'
     end
   end
 
