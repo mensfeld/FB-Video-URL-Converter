@@ -106,7 +106,7 @@ class FacebookVideo < ActiveRecord::Base
     unless video && video.valid?
       begin
         fb = FacebookBot.new
-      rescue
+      rescue FacebookBot::LoginFailed
         return 'fb_error'
       end
       url = fb.video_url(v_id)

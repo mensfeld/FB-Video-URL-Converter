@@ -1,3 +1,5 @@
+= Version 0.2.4
+* Experimental Rails errors loggin
 = Version 0.2.3
 * Fix for account_error - will clear cookie after error raise - so wiil try to relogin with next attempt (will not use corrupted cookie again)
 = Version 0.2.2
