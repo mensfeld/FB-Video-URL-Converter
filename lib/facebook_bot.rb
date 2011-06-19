@@ -38,10 +38,7 @@ class FacebookBot
 
     begin
       @@root = File.join(Rails.root, 'tmp')
-      @@rails = true
-    rescue Exception => e
-      @@rails = false
-      log e
+    rescue
       raise CookiePathNotInitialized, 'Specify cookie_path' if self.class.cookie_path.nil?
       @@root = self.class.cookie_path
     end
@@ -50,9 +47,7 @@ class FacebookBot
 
     begin
       @agent.cookie_jar.load(@cookies)
-    rescue Exception => e
-      log e
-      @agent.cookie_jar.clear!
+    rescue
     end if (File.file?(@cookies) && File.size(@cookies) > 10)
 
     self.login
@@ -69,24 +64,18 @@ class FacebookBot
       page = @agent.get(FB_URL) if page.root.to_html.include?('<title>Redirecting')
     end
 
-    @agent.cookie_jar.save_as(@cookies)
-    body = page.root.to_html
-
+    # Donno why but sometimes cookiejar gets crazy - so better be prepared ;)
     begin
-      # This is a UID given to each Facebook user.
-      @uid = %r{\\"user\\":(\d+),\\"hide\\"}.match(body)[1]
-    rescue Exception => e
-      log e
-      @uid = nil
+      @agent.cookie_jar.save_as(@cookies)
+    rescue
     end
+    
+    body = page.root.to_html
 
     # This is a token we need to submit forms.
     begin
       @post_form_id = %r{<input type="hidden" .* name="post_form_id" value="([^"]+)}.match(body)[1]
-    rescue Exception => e
-      log e
-      File.open(@cookies, 'w') {|f| f.write('') }
-      @agent.cookie_jar.clear!
+    rescue
       raise self.class::LoginFailed, 'Incorrect login or password'
     end
   end
@@ -95,8 +84,7 @@ class FacebookBot
     begin
       load_video_page(id)
       get_url(@video_page)
-    rescue Exception => e
-      log e
+    rescue
       VIDEO_ERROR
     end
 	end
@@ -107,11 +95,6 @@ class FacebookBot
   end
 
 	private
-
-  # We log stuff only when using rails (to lazy to write diff logger not for rails)
-  def log(e)
-    Rails.logger.error "[FB_Video_Url_Converter] #{e}" if @@rails
-  end
 
   def load_video_page(id)
     if @video_page.nil?

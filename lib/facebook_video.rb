@@ -54,8 +54,8 @@ class FacebookVideo < ActiveRecord::Base
   def self.get(v_id)
     v = self.video_data(v_id)
     case v
-      when 'video_error' then NotWorkingVideo.new(VIDEO_ERROR_MSG)
-      when 'fb_error' then NotWorkingVideo.new(FB_ERROR_MSG)
+      when :video_error then NotWorkingVideo.new(VIDEO_ERROR_MSG)
+      when :fb_error    then NotWorkingVideo.new(FB_ERROR_MSG)
       else v
     end
   end
@@ -100,14 +100,14 @@ class FacebookVideo < ActiveRecord::Base
       v_id = v_id.scan(/[0-9]+/).first
     end
 
-    return 'video_error' if v_id.nil? || v_id.length < 12
+    return :video_error if v_id.nil? || v_id.length < 12
 
     video = self.find_by_video_id(v_id)
     unless video && video.valid?
       begin
         fb = FacebookBot.new
       rescue FacebookBot::LoginFailed
-        return 'fb_error'
+        return :fb_error
       end
       url = fb.video_url(v_id)
       name = fb.video_name(v_id)
