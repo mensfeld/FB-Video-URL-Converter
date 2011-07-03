@@ -2,7 +2,7 @@
 
 require 'rubygems'
 require 'mechanize'
-include WWW
+#include WWW
 require 'uri'
 require 'cgi'
 require 'time'

@@ -24,7 +24,7 @@ describe FacebookBot do
       it "should throw failed exception" do
         l = subject.email
         subject.email = 'incorrect@incorrect.pl'
-        lambda { subject.new }.should raise_error(subject::LoginFailed, 'Incorrect login or password')
+        lambda { subject.new }.should raise_error(subject::LoginFailed, 'Incorrect login/password or cookie corrupted')
         remove_cookie
         subject.email = l
       end

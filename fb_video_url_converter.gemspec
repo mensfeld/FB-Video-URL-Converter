@@ -2,20 +2,20 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fb_video_url_converter}
-  s.version = "0.2.6"
+  s.version = "0.2.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Maciej Mensfeld"]
-  s.date = %q{2011-06-19}
+  s.authors = [%q{Maciej Mensfeld}]
+  s.date = %q{2011-07-03}
   s.description = %q{Facebook Video URL Converter is intended as an easy alternative to changing video hosting from Facebook to a different one.}
   s.email = %q{maciej@mensfeld.pl}
-  s.extra_rdoc_files = ["CHANGELOG.rdoc", "README.md", "lib/facebook_bot.rb", "lib/facebook_video.rb", "lib/fb_video_url_converter.rb", "lib/generators/fb_video_url_converter/install_generator.rb", "lib/generators/fb_video_url_converter/templates/create_facebook_videos_migration.rb", "lib/generators/fb_video_url_converter/templates/facebook_video_converter_init.rb"]
-  s.files = ["CHANGELOG.rdoc", "Gemfile", "MIT-LICENSE", "README.md", "Rakefile", "fb_video_url_converter.gemspec", "init.rb", "lib/facebook_bot.rb", "lib/facebook_video.rb", "lib/fb_video_url_converter.rb", "lib/generators/fb_video_url_converter/install_generator.rb", "lib/generators/fb_video_url_converter/templates/create_facebook_videos_migration.rb", "lib/generators/fb_video_url_converter/templates/facebook_video_converter_init.rb", "spec/facebook_bot_spec.rb", "spec/facebook_video_spec.rb", "spec/spec_helper.rb", "Manifest"]
+  s.extra_rdoc_files = [%q{CHANGELOG.rdoc}, %q{README.md}, %q{lib/facebook_bot.rb}, %q{lib/facebook_video.rb}, %q{lib/fb_video_url_converter.rb}, %q{lib/generators/fb_video_url_converter/install_generator.rb}, %q{lib/generators/fb_video_url_converter/templates/create_facebook_videos_migration.rb}, %q{lib/generators/fb_video_url_converter/templates/facebook_video_converter_init.rb}]
+  s.files = [%q{CHANGELOG.rdoc}, %q{Gemfile}, %q{MIT-LICENSE}, %q{README.md}, %q{Rakefile}, %q{fb_video_url_converter.gemspec}, %q{init.rb}, %q{lib/facebook_bot.rb}, %q{lib/facebook_video.rb}, %q{lib/fb_video_url_converter.rb}, %q{lib/generators/fb_video_url_converter/install_generator.rb}, %q{lib/generators/fb_video_url_converter/templates/create_facebook_videos_migration.rb}, %q{lib/generators/fb_video_url_converter/templates/facebook_video_converter_init.rb}, %q{spec/facebook_bot_spec.rb}, %q{spec/facebook_video_spec.rb}, %q{spec/spec_helper.rb}, %q{Manifest}]
   s.homepage = %q{https://github.com/mensfeld/FB-Video-URL-Converter}
-  s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Fb_video_url_converter", "--main", "README.md"]
-  s.require_paths = ["lib"]
+  s.rdoc_options = [%q{--line-numbers}, %q{--inline-source}, %q{--title}, %q{Fb_video_url_converter}, %q{--main}, %q{README.md}]
+  s.require_paths = [%q{lib}]
   s.rubyforge_project = %q{fb_video_url_converter}
-  s.rubygems_version = %q{1.5.2}
+  s.rubygems_version = %q{1.8.5}
   s.summary = %q{Facebook Video URL Converter is intended as an easy alternative to changing video hosting from Facebook to a different one.}
 
   if s.respond_to? :specification_version then
