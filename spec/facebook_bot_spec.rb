@@ -49,7 +49,7 @@ describe FacebookBot do
 
     it "should obtain valid name of a valid movie" do
       fb = subject.new
-      fb.video_name('111449252268656').should eql 'Naruto Shippuuden #203 Part2 [HD]'
+      fb.video_name('111449252268656').should eql 'Naruto Shippuuden #203 Part2'
     end
 
     it "should obtain valid error msg of a invalid movie" do

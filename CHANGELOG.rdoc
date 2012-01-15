@@ -1,3 +1,7 @@
+= Version 0.2.8
+* Fixed totaly invalid URL respond status
+* Fixed responding to short urls
+* Fixed video names gathering
 = Version 0.2.7
 * Fixed tests and dependencies
 = Version 0.2.6

@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fb_video_url_converter}
-  s.version = "0.2.7"
+  s.version = "0.2.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Maciej Mensfeld}]
-  s.date = %q{2011-07-03}
+  s.date = %q{2012-01-15}
   s.description = %q{Facebook Video URL Converter is intended as an easy alternative to changing video hosting from Facebook to a different one.}
   s.email = %q{maciej@mensfeld.pl}
   s.extra_rdoc_files = [%q{CHANGELOG.rdoc}, %q{README.md}, %q{lib/facebook_bot.rb}, %q{lib/facebook_video.rb}, %q{lib/fb_video_url_converter.rb}, %q{lib/generators/fb_video_url_converter/install_generator.rb}, %q{lib/generators/fb_video_url_converter/templates/create_facebook_videos_migration.rb}, %q{lib/generators/fb_video_url_converter/templates/facebook_video_converter_init.rb}]

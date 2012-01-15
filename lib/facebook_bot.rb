@@ -111,7 +111,7 @@ class FacebookBot
 	end
 
   def get_name(site)
-    name = site.scan(/datawrap\">(.+)<\/h3>/ix).first
+    name = site.scan(/title>(.+)<\/title>/ix).first
     name ? name.first : VIDEO_ERROR
   end
 

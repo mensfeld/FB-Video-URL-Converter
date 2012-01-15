@@ -20,9 +20,9 @@ describe FacebookVideo do
     end
 
     it "should fetch it and return name" do
-      FacebookVideo.get('111449252268656').name.should eql 'Naruto Shippuuden #203 Part2 [HD]'
+      FacebookVideo.get('111449252268656').name.should eql 'Naruto Shippuuden #203 Part2'
       url = 'http://www.facebook.com/video/video.php?v=111449252268656&comments'
-      FacebookVideo.get(url).name.should eql 'Naruto Shippuuden #203 Part2 [HD]'
+      FacebookVideo.get(url).name.should eql 'Naruto Shippuuden #203 Part2'
     end
   end
 
@@ -47,6 +47,17 @@ describe FacebookVideo do
       FacebookVideo.get('111449252268656')
       v.reload
       v.cached_at.should > t
+    end
+  end
+
+  context "when video url is corrupted" do
+    it "should tell us that video is invalid" do
+      t = Time.now
+      FacebookVideo.get('111449252268656')
+      v = FacebookVideo.find_by_video_id('111449252268656')
+      v.url = 'dasdasdasdasd'
+      v.cached_at = Time.at(946702800)
+      v.valid?.should == false
     end
   end
 

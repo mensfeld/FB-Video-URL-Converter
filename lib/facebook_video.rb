@@ -84,7 +84,7 @@ class FacebookVideo < ActiveRecord::Base
       http = Net::HTTP.new(host)
       headers = http.head(self.url)
     rescue
-      return true
+      return false
     end
     if headers.code == "200"
       true
