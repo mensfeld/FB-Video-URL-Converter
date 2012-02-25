@@ -1,3 +1,5 @@
+= Version 0.2.9
+* Adjustment for new FB video url embedding (in js)
 = Version 0.2.8
 * Fixed totaly invalid URL respond status
 * Fixed responding to short urls

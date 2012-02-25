@@ -5,7 +5,7 @@ ROOT = File.expand_path(File.dirname(__FILE__))
 
 def remove_cookie
   c_p = File.join(ROOT, '..', 'lib', "cookie_#{FacebookBot.email}.yml")
-  #FileUtils.rm( c_p ) if File.file?( c_p )
+  FileUtils.rm( c_p ) if File.file?( c_p )
 end
 
 describe FacebookBot do
@@ -22,7 +22,7 @@ describe FacebookBot do
 
     context "and login or password is incorrect" do
       it "should throw failed exception" do
-        l = subject.email
+        l = subject.email.clone
         subject.email = 'incorrect@incorrect.pl'
         lambda { subject.new }.should raise_error(subject::LoginFailed, 'Incorrect login/password or cookie corrupted')
         remove_cookie
@@ -49,7 +49,7 @@ describe FacebookBot do
 
     it "should obtain valid name of a valid movie" do
       fb = subject.new
-      fb.video_name('111449252268656').should eql 'Naruto Shippuuden #203 Part2'
+      fb.video_name('111449252268656').should eql 'Naruto Shippuuden #203 Part2 | Facebook'
     end
 
     it "should obtain valid error msg of a invalid movie" do

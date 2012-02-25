@@ -54,35 +54,32 @@ class FacebookBot
   end
 
   def login
-    begin
-      page = @agent.get(FB_URL)
+    page = @agent.get(FB_URL)
 
-      if (loginf = page.form_id("login_form"))
-        loginf.set_fields(:email => self.class.email, :pass => self.class.password)
-        page = @agent.submit(loginf, loginf.buttons.first)
-        # When we login (successfully) we will be redirected in a not so "gracefull"
-        # way - so we need to "skip" redirecting page
-        page = @agent.get(FB_URL) if page.root.to_html.include?('<title>Redirecting')
-      end
+    if (loginf = page.form_with(:id => "login_form"))
+      loginf.set_fields(:email => self.class.email, :pass => self.class.password)
 
-      @agent.cookie_jar.save_as(@cookies)
-      
-      body = page.root.to_html
-      @post_form_id = %r{<input type="hidden" .* name="post_form_id" value="([^"]+)}.match(body)[1]
-    rescue
-      @agent.cookie_jar.clear!
-      @agent.cookie_jar.save_as(@cookies)
+      page = @agent.submit(loginf, loginf.buttons.first)
+    end
+    
+    @agent.cookie_jar.save_as(@cookies)
+
+    body = page.root.to_html
+    @post_form_id = %r{<input type="hidden" .* name="post_form_id" value="([^"]+)}.match(body)[1]
+    if body.include?('Incorrect Email')
       raise self.class::LoginFailed, 'Incorrect login/password or cookie corrupted'
     end
+  rescue
+    @agent.cookie_jar.clear!
+    @agent.cookie_jar.save_as(@cookies)
+    raise self.class::LoginFailed, 'Incorrect login/password or cookie corrupted'
   end
 
 	def video_url(id)
-    begin
-      load_video_page(id)
-      get_url(@video_page)
-    rescue
-      VIDEO_ERROR
-    end
+    load_video_page(id)
+    get_url(@video_page)
+  rescue
+    VIDEO_ERROR
 	end
 
   def video_name(id)
@@ -100,7 +97,8 @@ class FacebookBot
   end
 
 	def get_url(url)
-		url = url.scan(/addVariable\(\"highqual_src\",\s\"http.+\"\)/ix).first
+		url = url.scan(/\[\"highqual_src\",\"(.+)\"\]/ix).first
+    url = url.first
 		url = url.split(')').first.gsub('\u00253A', ':')
 		url = url.gsub('\u00252F', '/')
 		url = url.gsub('\u00253F', '?')
