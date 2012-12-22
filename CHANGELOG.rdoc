@@ -1,3 +1,6 @@
+= Version 0.3.0
+* Quick adjustment for new FB embedding, tests aren't updated :(
+* Works for HD and SD
 = Version 0.2.9
 * Adjustment for new FB video url embedding (in js)
 = Version 0.2.8

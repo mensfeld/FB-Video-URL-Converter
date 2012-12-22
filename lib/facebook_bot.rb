@@ -6,6 +6,7 @@ require 'mechanize'
 require 'uri'
 require 'cgi'
 require 'time'
+require 'json'
 
 class Mechanize::Page
   def form_id(formId)
@@ -35,51 +36,13 @@ class FacebookBot
     @video_page = nil
     @agent = Mechanize.new
     @agent.user_agent_alias = USER_AGENT
-
-    begin
-      @@root = File.join(Rails.root, 'tmp')
-    rescue
-      raise CookiePathNotInitialized, 'Specify cookie_path' if self.class.cookie_path.nil?
-      @@root = self.class.cookie_path
-    end
-
-    @cookies = File.join(@@root, "cookie_#{self.class.email}.yml")
-
-    begin
-      @agent.cookie_jar.load(@cookies)
-    rescue
-    end if (File.file?(@cookies) && File.size(@cookies) > 10)
-
-    self.login
-  end
-
-  def login
-    page = @agent.get(FB_URL)
-
-    if (loginf = page.form_with(:id => "login_form"))
-      loginf.set_fields(:email => self.class.email, :pass => self.class.password)
-
-      page = @agent.submit(loginf, loginf.buttons.first)
-    end
-    
-    @agent.cookie_jar.save_as(@cookies)
-
-    body = page.root.to_html
-    @post_form_id = %r{<input type="hidden" .* name="post_form_id" value="([^"]+)}.match(body)[1]
-    if body.include?('Incorrect Email')
-      raise self.class::LoginFailed, 'Incorrect login/password or cookie corrupted'
-    end
-  rescue
-    @agent.cookie_jar.clear!
-    @agent.cookie_jar.save_as(@cookies)
-    raise self.class::LoginFailed, 'Incorrect login/password or cookie corrupted'
   end
 
 	def video_url(id)
     load_video_page(id)
     get_url(@video_page)
-  rescue
-    VIDEO_ERROR
+  #rescue
+  #  VIDEO_ERROR
 	end
 
   def video_name(id)
@@ -96,21 +59,45 @@ class FacebookBot
     end
   end
 
-	def get_url(url)
-		url = url.scan(/\[\"highqual_src\",\"(.+)\"\]/ix).first
-    url = url.first
-		url = url.split(')').first.gsub('\u00253A', ':')
-		url = url.gsub('\u00252F', '/')
-		url = url.gsub('\u00253F', '?')
-		url = url.gsub('\u00253D', '=')
-		url = url.gsub('\u002526', '&')
-		url = "http://#{url.split('http://')[1]}".split('"').first
-		CGI.unescapeHTML(url)
+	def get_url(page)
+    url ||= extract_url_hd(page)
+    url ||= extract_url_sd(page)
+    url ||= extract_url_old(page)
+    url.nil? ? raise(RuntimeError) : url
 	end
 
   def get_name(site)
     name = site.scan(/title>(.+)<\/title>/ix).first
     name ? name.first : VIDEO_ERROR
+  end
+
+  def extract_url_old(url)
+		url = url.scan(/\[\"highqual_src\",\"(.+)\"\]/ix).first
+    url = url.first
+		url = url.gsub('\u00253A', ':')
+		url = url.gsub('\u00252F', '/')
+		url = url.gsub('\u00253F', '?')
+		url = url.gsub('\u00253D', '=')
+		url = url.gsub('\u002526', '&')
+    url = url.gsub('\u00255C', '\\')
+		url = "http://#{url.split('http://')[1]}".split('"').first
+		CGI.unescapeHTML(url)
+  rescue
+    nil
+  end
+
+  def extract_url_hd(page)
+    url = page.scan(/hd_src.*(http.*?)(\\u002522)/ix).last.first
+    URI.decode(JSON('["'+url+'"]').first).gsub('\\', '')
+  #rescue
+  #  nil
+  end
+
+  def extract_url_sd(page)
+    url = page.scan(/sd_src.*(http.*?)(\\u002522)/ix).last.first
+    URI.decode(JSON('["'+url+'"]').first).gsub('\\', '')
+  rescue
+    nil
   end
 
 end
