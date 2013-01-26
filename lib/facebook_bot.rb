@@ -87,15 +87,15 @@ class FacebookBot
   end
 
   def extract_url_hd(page)
-    url = page.scan(/hd_src.*(http.*?)(\\u002522)/ix).last.first
-    URI.decode(JSON('["'+url+'"]').first).gsub('\\', '')
-  #rescue
-  #  nil
+    url = page.scan(/hd_src.*?((http.*?)(\.mp4).*?(\\u002522))/ix).last.first
+    URI.decode(JSON('["'+url+'"]').first).gsub('\\', '').gsub('"', '')
+  rescue
+    nil
   end
 
   def extract_url_sd(page)
-    url = page.scan(/sd_src.*(http.*?)(\\u002522)/ix).last.first
-    URI.decode(JSON('["'+url+'"]').first).gsub('\\', '')
+    url = page.scan(/sd_src.*?((http.*?)(\.mp4).*?(\\u002522))/ix).last.first
+    URI.decode(JSON('["'+url+'"]').first).gsub('\\', '').gsub('"', '')
   rescue
     nil
   end

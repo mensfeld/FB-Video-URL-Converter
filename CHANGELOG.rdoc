@@ -1,3 +1,5 @@
+= Version 0.3.1
+* Update of regexp for extracting HD/SD episodes url
 = Version 0.3.0
 * Quick adjustment for new FB embedding, tests aren't updated :(
 * Works for HD and SD
